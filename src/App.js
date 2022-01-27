@@ -11,14 +11,29 @@ class App extends Component {
   static propTypes = {};
 
   state = {
-    contact: [
-      { name: "Oleh Solomka", id: nanoid(), number: "+3805612312333" },
-      { name: "Ruslan Solomka", id: nanoid(), number: "+3805612312333" },
-      { name: "Lilia Solomka", id: nanoid(), number: "+3805612312333" },
-    ],
+    contact: [],
     filter: "",
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem("contact");
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts) {
+      this.setState({
+        contact: parsedContacts,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const nextContacts = this.state.contact;
+    const prevContacts = prevState.contact;
+
+    if (nextContacts !== prevContacts) {
+      localStorage.setItem("contact", JSON.stringify(nextContacts));
+    }
+  }
   onSubmitData = ({ name, number }) => {
     const normalizedName = name.toLowerCase();
     const checkedNames = [];
