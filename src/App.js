@@ -36,12 +36,11 @@ class App extends Component {
   }
   onSubmitData = ({ name, number }) => {
     const normalizedName = name.toLowerCase();
-    const checkedNames = [];
 
-    this.state.contact.forEach((unit) => {
-      checkedNames.push(unit.name.toLowerCase());
-    });
-    if (checkedNames.includes(normalizedName)) {
+    const checkedName = this.state.contact.find(
+      (element) => element.name.toLowerCase() === normalizedName
+    );
+    if (checkedName) {
       alert(`${normalizedName} is already in contacts`);
       return;
     }
